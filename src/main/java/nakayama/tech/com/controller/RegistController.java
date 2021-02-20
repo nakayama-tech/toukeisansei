@@ -1,0 +1,39 @@
+package nakayama.tech.com.controller;
+
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+/**
+ * 初期画面遷移時のコントローラー
+ *
+ * FROM：/
+ * TO:home.jsp
+ *
+ */
+@Controller
+public class RegistController {
+	private static final Logger logger = LoggerFactory.getLogger(RegistController.class);
+
+	@RequestMapping(value = "newRegist", params="regist", method = RequestMethod.POST)
+	public String regist(Locale locale, Model model) {
+		logger.info("Welcome home! The client locale is {}.", locale);
+		Date date = new Date();
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+
+		String formattedDate = dateFormat.format(date);
+
+		model.addAttribute("serverTime", formattedDate );
+
+
+
+		return "registOK";
+	}
+}
