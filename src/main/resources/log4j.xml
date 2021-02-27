@@ -1,29 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-	<!-- Appenders -->
-	<appender name="console" class="org.apache.log4j.ConsoleAppender">
-		<param name="Target" value="System.out" />
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<errorHandler class="org.jboss.logging.util.OnlyOnceErrorHandler"/>
+		<param name="Target" value="System.out"/>
+		<param name="Threshold" value="INFO"/>
+
+	<layout class="org.apache.log4j.PatternLayout">
+		<!-- The default pattern: Date Priority [Category] Message\n -->
+		<param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
+	</layout>
+	</appender>
+
+	<!-- DebugAppenders -->
+	<appender name="debugAppender" class="org.apache.log4j.CompositeRollingFileAppender">
+		<param name="File" value="C:/workspace/toukei_debug.log" />
+		<param name="Append" value="true" />
+		<param name="DataPattern" value="yyyyMMdd" />
+		<param name="Encoding" value="Shift-JIS" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
+			<param name="ConversionPattern"
+				value="%d{yyyy-MM-dd HH:mm:ss.SSS} %X{HOST_NAME} I %p %X{SERVICE_NAME} %m _ _ _ _ _ %X{REQUEST_ID} %X{SESSION_ID} _ %c %M%n" />
 		</layout>
 	</appender>
-	
+
 	<!-- Application Loggers -->
 	<logger name="nakayama.tech.com">
-		<level value="info" />
+		<level value="debug" />
+		<appender-ref ref="debugAppender" />
 	</logger>
-	
+
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
 		<level value="info" />
 	</logger>
-	
+
 	<logger name="org.springframework.beans">
 		<level value="info" />
 	</logger>
-	
+
 	<logger name="org.springframework.context">
 		<level value="info" />
 	</logger>
@@ -34,8 +50,7 @@
 
 	<!-- Root Logger -->
 	<root>
-		<priority value="warn" />
-		<appender-ref ref="console" />
+		<appender-ref ref="CONSOLE" />
 	</root>
-	
+
 </log4j:configuration>
